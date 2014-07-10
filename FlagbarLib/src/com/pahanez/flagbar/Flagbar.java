@@ -1,16 +1,13 @@
 package com.pahanez.flagbar;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.Point;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
@@ -29,7 +26,7 @@ public class Flagbar extends View {
 	RectF rf;
 	//
 	
-	private List<Paint> paints = new ArrayList<Paint>();
+	private List<Stripe> stripes = new ArrayList<Stripe>();
 
 	public Flagbar(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
@@ -56,7 +53,12 @@ public class Flagbar extends View {
 			p.setStrokeWidth(mStrokeWidth);
 			p.setStyle(Style.STROKE);
 			p.setAntiAlias(true);
-			paints.add(p);
+			
+			Stripe stripe = new Stripe();
+			stripe.paint = p;
+			stripe.strokeWidth = mStrokeWidth;
+			
+			stripes.add(stripe);
 		}
 	}
 
@@ -70,9 +72,20 @@ public class Flagbar extends View {
 		android.util.Log.e("p37td8", "mLayoutWidth : " + mLayoutWidth + " , mLayoutWidth : "  + mLayoutWidth);
 		mCenterX = mLayoutWidth/2;
 		mCenterY = mLayoutHeigth/2;
+		for(int i = 0; i < mStripesCount; i++){
+			rf = new RectF(mCenterX - mLayoutWidth/2 + mStrokeWidth/2, mCenterY-mLayoutHeigth/2+mStrokeWidth/2, mCenterX+mLayoutWidth/2-mStrokeWidth/2, mCenterY+mLayoutHeigth/2-mStrokeWidth/2);
+			
+		}
 		
 		
-		rf = new RectF(mCenterX - mLayoutWidth/2 + mStrokeWidth/2, mCenterY-mLayoutHeigth/2+mStrokeWidth/2, mCenterX+mLayoutWidth/2-mStrokeWidth/2, mCenterY+mLayoutHeigth/2-mStrokeWidth/2);
+	}
+	
+	private class Stripe{
+		int strokeWidth;
+		RectF bounds;
+		int startDeg;
+		int endDeg;
+		Paint paint;
 		
 	}
 	
@@ -81,7 +94,7 @@ public class Flagbar extends View {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		for(int i = 0; i < mStripesCount; i++){
-			canvas.drawArc(rf, 30*i, 60*i, false, paints.get(i));
+//			canvas.drawArc(rf, 30*i, 60*i, false, paints.get(i));
 		}
 		
 	}
