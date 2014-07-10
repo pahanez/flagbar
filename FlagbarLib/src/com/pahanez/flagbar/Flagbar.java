@@ -20,6 +20,7 @@ public class Flagbar extends View {
 	private int mStripesCount = 3;
 	private int [] colors = new int[mStripesCount];
 	private int mStrokeWidth = 30;
+	private boolean mIndeterminate = false;
 	//
 	
 	//tmp
@@ -44,9 +45,9 @@ public class Flagbar extends View {
 	}
 	
 	private void init() {
-		colors[0] = Color.CYAN;
+		colors[0] = Color.YELLOW;
 		colors[1] = Color.RED;
-		colors[2] = Color.DKGRAY;
+		colors[2] = Color.BLACK;
 		for(int i = 0; i < mStripesCount; i++){
 			Paint  p = new Paint();
 			p.setColor(colors[i]);
@@ -75,8 +76,8 @@ public class Flagbar extends View {
 			stripes.get(i).bounds = rf;
 			
 			//tmp
-			stripes.get(i).startDeg = i*30+30;
-			stripes.get(i).endDeg = i*30+60;
+			stripes.get(i).startDeg = 0;
+			stripes.get(i).endDeg = 270;
 			 
 		}
 		
@@ -90,7 +91,11 @@ public class Flagbar extends View {
 		Paint paint;
 		
 		private void draw(Canvas c){
-			c.drawArc(bounds, startDeg, endDeg, false, paint);
+			if(mIndeterminate){
+				//TODO
+			}else{
+				c.drawArc(bounds, startDeg, endDeg, false, paint);
+			}
 		} 
 		
 	}
