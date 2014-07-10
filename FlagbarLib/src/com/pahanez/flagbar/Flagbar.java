@@ -77,7 +77,7 @@ public class Flagbar extends View {
 			//tmp
 			stripes.get(i).startDeg = i*30+30;
 			stripes.get(i).endDeg = i*30+60;
-			
+			 
 		}
 		
 		
