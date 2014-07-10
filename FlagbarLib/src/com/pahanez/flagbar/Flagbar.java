@@ -56,8 +56,6 @@ public class Flagbar extends View {
 			
 			Stripe stripe = new Stripe();
 			stripe.paint = p;
-			stripe.strokeWidth = mStrokeWidth;
-			
 			stripes.add(stripe);
 		}
 	}
@@ -73,7 +71,11 @@ public class Flagbar extends View {
 		mCenterX = mLayoutWidth/2;
 		mCenterY = mLayoutHeigth/2;
 		for(int i = 0; i < mStripesCount; i++){
-			rf = new RectF(mCenterX - mLayoutWidth/2 + mStrokeWidth/2, mCenterY-mLayoutHeigth/2+mStrokeWidth/2, mCenterX+mLayoutWidth/2-mStrokeWidth/2, mCenterY+mLayoutHeigth/2-mStrokeWidth/2);
+			rf = new RectF(mCenterX - mLayoutWidth/2 + mStrokeWidth/2+(i*mStrokeWidth), mCenterY-mLayoutHeigth/2+mStrokeWidth/2+(i*mStrokeWidth), mCenterX+mLayoutWidth/2-mStrokeWidth/2-(i*mStrokeWidth), mCenterY+mLayoutHeigth/2-mStrokeWidth/2-(i*mStrokeWidth));
+			stripes.get(i).bounds = rf;
+			
+			stripes.get(i).startDeg = i*30+30;
+			stripes.get(i).endDeg = i*30+60;
 			
 		}
 		
@@ -81,11 +83,14 @@ public class Flagbar extends View {
 	}
 	
 	private class Stripe{
-		int strokeWidth;
 		RectF bounds;
 		int startDeg;
 		int endDeg;
 		Paint paint;
+		
+		private void draw(Canvas c){
+			c.drawArc(bounds, startDeg, endDeg, false, paint);
+		} 
 		
 	}
 	
@@ -93,10 +98,8 @@ public class Flagbar extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		for(int i = 0; i < mStripesCount; i++){
-//			canvas.drawArc(rf, 30*i, 60*i, false, paints.get(i));
-		}
-		
+		for(Stripe stripe : stripes)
+			stripe.draw(canvas);
 	}
 
 }
