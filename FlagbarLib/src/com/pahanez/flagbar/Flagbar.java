@@ -86,7 +86,7 @@ public class Flagbar extends View {
 	private class Stripe{
 		RectF bounds;
 		int startDeg;
-		int endDeg;
+		int endDeg; 
 		Paint paint;
 		
 		private void draw(Canvas c){
