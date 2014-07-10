@@ -74,6 +74,7 @@ public class Flagbar extends View {
 			rf = new RectF(mCenterX - mLayoutWidth/2 + mStrokeWidth/2+(i*mStrokeWidth), mCenterY-mLayoutHeigth/2+mStrokeWidth/2+(i*mStrokeWidth), mCenterX+mLayoutWidth/2-mStrokeWidth/2-(i*mStrokeWidth), mCenterY+mLayoutHeigth/2-mStrokeWidth/2-(i*mStrokeWidth));
 			stripes.get(i).bounds = rf;
 			
+			//tmp
 			stripes.get(i).startDeg = i*30+30;
 			stripes.get(i).endDeg = i*30+60;
 			
