@@ -11,6 +11,10 @@
 # Generated files
 bin/
 gen/
+FlagbarSample/bin
+FlagbarSample/gen
+FlagbarLig/gin
+FlagbarLib/gen
 
 # Gradle files
 .gradle/
