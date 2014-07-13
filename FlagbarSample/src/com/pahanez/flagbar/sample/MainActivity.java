@@ -4,6 +4,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +15,7 @@ import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
 
+	private int mProgress = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -22,6 +25,18 @@ public class MainActivity extends ActionBarActivity {
 			getSupportFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
 		}
 	}
+	
+    private Handler mIndeterminateHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+        	mProgress += 4;
+        	if(mProgress >= 360)
+        		mProgress = 0;
+        	setProgress(mProgress);
+        	sendEmptyMessageDelayed(0, 30000);
+            
+    		}
+    };
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

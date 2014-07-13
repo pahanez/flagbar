@@ -17,15 +17,17 @@ import android.view.View;
 public class Flagbar extends View {
 	
 	private static int DELAY_30_FPS = 1000/30;
+	private static int DELAY_60_FPS = 1000/60;
 	
 	private int mLayoutWidth,mLayoutHeigth,mCenterX,mCenterY;
 	
 	//->xml properties
 	private int mStripesCount = 3;
 	private int [] colors = new int[mStripesCount];
+	private int []	speeds = new int[mStripesCount];
 	private Direction [] directions = new Direction[mStripesCount]; 
 	private int mStrokeWidth = 30;
-	private boolean mIndeterminate = false;
+	private boolean mIndeterminate = true;
 	private int start = -90;
 	//
 	
@@ -42,12 +44,11 @@ public class Flagbar extends View {
     private Handler mIndeterminateHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-        	mProgress += 4;
-        	if(mProgress >= 360)
-        		mProgress = 0;
-        	setProgress(mProgress);
-        	sendEmptyMessageDelayed(0, DELAY_30_FPS);
-            
+        	removeMessages(0);
+        	invalidate();
+        	if(mIndeterminate)
+        		sendEmptyMessageDelayed(0, DELAY_60_FPS);
+            //Deutschland champion 2014!!!!
     		}
     };
 	
@@ -76,6 +77,11 @@ public class Flagbar extends View {
 		directions[0] = Direction.CLOCKWIZE;
 		directions[1] = Direction.COUNTERCLOCKWIZE;
 		directions[2] = Direction.CLOCKWIZE;
+		
+		speeds[0] = 2;
+		speeds[1] = 5;
+		speeds[2] = 7;
+		
 
 		for(int i = 0; i < mStripesCount; i++){
 			Paint  p = new Paint();
@@ -87,6 +93,7 @@ public class Flagbar extends View {
 			Stripe stripe = new Stripe();
 			stripe.paint = p;
 			stripe.dir = directions[i];
+			stripe.speed = speeds[i];
 			stripes.add(stripe);
 		}
 	}
@@ -107,11 +114,11 @@ public class Flagbar extends View {
 			
 			//tmp
 			stripes.get(i).startDeg = -90;
-			stripes.get(i).endDeg = 180;
+			stripes.get(i).endDeg = 60;
 			 
 		}
-		
-		mIndeterminateHandler.sendEmptyMessage(0);
+		if(mIndeterminate)
+			mIndeterminateHandler.sendEmptyMessage(0);
 	}
 	
 	
@@ -136,18 +143,26 @@ public class Flagbar extends View {
 		int endDeg; 
 		Paint paint;
 		Direction dir;
+		int speed = 5;
 		
 		private void draw(Canvas c){
 			if(mIndeterminate){
 				//TODO
 				switch (dir) {
 				case CLOCKWIZE:
-					
+						if(startDeg >= 360) startDeg = 0;
+						startDeg+=speed;
 					break;
 				case COUNTERCLOCKWIZE:
-				
+					if(startDeg <= -360) startDeg = 0;
+						startDeg-=speed;
+						
 					break;
 				}
+				
+				c.drawArc(bounds, startDeg, endDeg, false, paint);
+//				postInvalidateDelayed(DELAY_60_FPS);
+				
 			}else{
 				c.drawArc(bounds, startDeg, endDeg, false, paint);
 			}
