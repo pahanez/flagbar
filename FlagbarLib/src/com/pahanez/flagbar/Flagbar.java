@@ -23,6 +23,7 @@ public class Flagbar extends View {
 	//->xml properties
 	private int mStripesCount = 3;
 	private int [] colors = new int[mStripesCount];
+	private Direction [] directions = new Direction[mStripesCount]; 
 	private int mStrokeWidth = 30;
 	private boolean mIndeterminate = false;
 	private int start = -90;
@@ -33,6 +34,10 @@ public class Flagbar extends View {
 	//
 	
 	private int mProgress;
+	
+	public enum Direction {
+		CLOCKWIZE,COUNTERCLOCKWIZE;
+	}
 	
     private Handler mIndeterminateHandler = new Handler() {
         @Override
@@ -67,6 +72,11 @@ public class Flagbar extends View {
 		colors[0] = Color.BLACK;
 		colors[1] = Color.RED;
 		colors[2] = 0XFFFFCC00;
+		
+		directions[0] = Direction.CLOCKWIZE;
+		directions[1] = Direction.COUNTERCLOCKWIZE;
+		directions[2] = Direction.CLOCKWIZE;
+
 		for(int i = 0; i < mStripesCount; i++){
 			Paint  p = new Paint();
 			p.setColor(colors[i]);
@@ -76,6 +86,7 @@ public class Flagbar extends View {
 			
 			Stripe stripe = new Stripe();
 			stripe.paint = p;
+			stripe.dir = directions[i];
 			stripes.add(stripe);
 		}
 	}
@@ -124,10 +135,19 @@ public class Flagbar extends View {
 		int startDeg;
 		int endDeg; 
 		Paint paint;
+		Direction dir;
 		
 		private void draw(Canvas c){
 			if(mIndeterminate){
 				//TODO
+				switch (dir) {
+				case CLOCKWIZE:
+					
+					break;
+				case COUNTERCLOCKWIZE:
+				
+					break;
+				}
 			}else{
 				c.drawArc(bounds, startDeg, endDeg, false, paint);
 			}
