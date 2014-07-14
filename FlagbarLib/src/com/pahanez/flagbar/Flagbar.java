@@ -16,7 +16,7 @@ import android.view.View;
 
 public class Flagbar extends View {
 	
-	private static int DELAY_30_FPS = 1000/30;
+	private static int DELAY_35_FPS = 1000/45;
 	private static int DELAY_60_FPS = 1000/60;
 	
 	private int mLayoutWidth,mLayoutHeigth,mCenterX,mCenterY;
@@ -72,7 +72,7 @@ public class Flagbar extends View {
 	private void init() {
 		colors[0] = Color.BLACK;
 		colors[1] = Color.RED;
-		colors[2] = 0XFFFFCC00;
+		colors[2] = 0XFFFFCC00; 
 		
 		directions[0] = Direction.CLOCKWIZE;
 		directions[1] = Direction.COUNTERCLOCKWIZE;
@@ -135,6 +135,10 @@ public class Flagbar extends View {
 			}
 			invalidate();
 		}
+	}
+	
+	public void setIndeterminate(boolean indeterminate){
+		
 	}
 	
 	private class Stripe{
