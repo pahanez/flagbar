@@ -105,7 +105,7 @@ public class Flagbar extends View {
 		mLayoutWidth = w;
 		mLayoutHeigth =  h;
 		
-		android.util.Log.e("p37td8", "mLayoutWidth : " + mLayoutWidth + " , mLayoutWidth : "  + mLayoutWidth);
+		android.util.Log.e("p37td8", "mLayoutWidth : " + mLayoutWidth + " , mLayoutWidth2 : "  + mLayoutWidth);
 		mCenterX = mLayoutWidth/2;
 		mCenterY = mLayoutHeigth/2;
 		for(int i = 0; i < mStripesCount; i++){
