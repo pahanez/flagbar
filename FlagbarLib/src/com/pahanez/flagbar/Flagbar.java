@@ -1,6 +1,7 @@
 package com.pahanez.flagbar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;
@@ -22,6 +23,7 @@ public class Flagbar extends View {
 	private static int DELAY_60_FPS = 1000/60;
 
     private static final int DEFAULT_STRIPE_COLOR = Color.WHITE;
+    private static final int DEFAULT_STRIPE_SPEED = 5;
     private static final int MAX_STRIPES_COUNT = 4;
 
 	private int mLayoutWidth,mLayoutHeigth,mCenterX,mCenterY;
@@ -32,8 +34,7 @@ public class Flagbar extends View {
 
 	//->xml properties
 
-	private int []	speeds = new int[mStripesCount];
-	private Direction [] directions = new Direction[mStripesCount]; 
+	private Direction [] directions = new Direction[mStripesCount];
 	private int mStrokeWidth = 30;
 	private boolean mIndeterminate = true;
 	private int start = -90;
@@ -68,7 +69,6 @@ public class Flagbar extends View {
 
 	public Flagbar(Context context, AttributeSet attrs) {
 		super(context, attrs);
-
         xmlConfig(context.obtainStyledAttributes(attrs,
                 R.styleable.flagbar));
 
@@ -85,31 +85,32 @@ public class Flagbar extends View {
         if(mStripesCount<1 || mStripesCount>4)
             throw new IllegalArgumentException("Stripes count could be between 1 ... 4 !");
 
+
+        //colors
         int colors []  = new int[MAX_STRIPES_COUNT];
-        int firstLineColor = (int) typedArray.getInteger(R.styleable.flagbar_firstLineColor,DEFAULT_STRIPE_COLOR);
-        int secondLineColor = (int) typedArray.getInteger(R.styleable.flagbar_secondLineColor,DEFAULT_STRIPE_COLOR);
-        int thirdLineColor = (int) typedArray.getInteger(R.styleable.flagbar_thirdLineColor,DEFAULT_STRIPE_COLOR);
-        int fourthLineColor = (int) typedArray.getInteger(R.styleable.flagbar_fourthLineColor,DEFAULT_STRIPE_COLOR);
+        colors[0] = (int) typedArray.getInteger(R.styleable.flagbar_firstLineColor,DEFAULT_STRIPE_COLOR);
+        colors[1] = (int) typedArray.getInteger(R.styleable.flagbar_secondLineColor,DEFAULT_STRIPE_COLOR);
+        colors[2] = (int) typedArray.getInteger(R.styleable.flagbar_thirdLineColor,DEFAULT_STRIPE_COLOR);
+        colors[3] = (int) typedArray.getInteger(R.styleable.flagbar_fourthLineColor,DEFAULT_STRIPE_COLOR);
+
+        //speed
+        int speeds [] = new int[MAX_STRIPES_COUNT];
+        speeds[0] = typedArray.getInteger(R.styleable.flagbar_firstLineSpeed,DEFAULT_STRIPE_SPEED);
+        speeds[1] = typedArray.getInteger(R.styleable.flagbar_secondLineSpeed,DEFAULT_STRIPE_SPEED);
+        speeds[2] = typedArray.getInteger(R.styleable.flagbar_thirdLineSpeed,DEFAULT_STRIPE_SPEED);
+        speeds[3] = typedArray.getInteger(R.styleable.flagbar_thirdLineSpeed,DEFAULT_STRIPE_SPEED);
 
 
 
-        colors[0] = firstLineColor;
-        colors[1] = secondLineColor;
-        colors[2] = thirdLineColor;
-        colors[3] = fourthLineColor;
 
-        int tmp = typedArray.getInteger(R.styleable.flagbar_stripesSpeed,DEFAULT_STRIPE_COLOR);
-        android.util.Log.e("p37td8", "check : " +  typedArray.getInteger(R.styleable.flagbar_stripesSpeed,DEFAULT_STRIPE_COLOR));
-        android.util.Log.e("p37td8", "check : " +  Integer.toHexString(typedArray.getInteger(R.styleable.flagbar_stripesSpeed,DEFAULT_STRIPE_COLOR)));
+
+        android.util.Log.e("p37td8", "check : " + Arrays.toString(speeds));
 
 
             directions[0] = Direction.CLOCKWIZE;
             directions[1] = Direction.COUNTERCLOCKWIZE;
             directions[2] = Direction.CLOCKWIZE;
 
-            speeds[0] = 2;
-            speeds[1] = 5;
-            speeds[2] = 7;
 
 
             for(int i = 0; i < mStripesCount; i++){

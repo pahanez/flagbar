@@ -22,8 +22,11 @@
         flagbar:stripesCount="three"
         flagbar:firstLineColor="@color/black"
         flagbar:secondLineColor="#00FFFF"
-        flagbar:stripesSpeed="high|low|low"
+        flagbar:firstLineSpeed="medium"
+        flagbar:secondLineSpeed="low"
+        flagbar:thirdLineSpeed="high"
         android:layout_height="200dp"
+
 
         android:background="@android:color/darker_gray"
         android:layout_centerInParent="true" />

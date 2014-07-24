@@ -13,11 +13,27 @@
         <attr name="thirdLineColor" format="color" />
         <attr name="fourthLineColor" format="color" />
 
-        <attr name="stripesSpeed">
-            <flag name="high" value="0x30" />
-            <flag name="medium" value="0x50" />
-            <flag name="low" value="0x03" />
+        <attr name="firstLineSpeed" format="integer">
+            <enum name="high" value="7" />
+            <enum name="medium" value="5" />
+            <enum name="low" value="2" />
         </attr>
+        <attr name="secondLineSpeed" format="integer">
+            <enum name="high" value="7" />
+            <enum name="medium" value="5" />
+            <enum name="low" value="2" />
+        </attr>
+        <attr name="thirdLineSpeed" format="integer">
+            <enum name="high" value="7" />
+            <enum name="medium" value="5" />
+            <enum name="low" value="2" />
+        </attr>
+        <attr name="fourthLineSpeed" format="integer">
+            <enum name="high" value="7" />
+            <enum name="medium" value="5" />
+            <enum name="low" value="2" />
+        </attr>
+
 
     </declare-styleable>
 </resources>
