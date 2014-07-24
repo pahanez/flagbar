@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="flagbar">
+        <attr name="stripesCount" format="integer">
+            <enum name="one" value="1" />
+            <enum name="two" value="2" />
+            <enum name="three" value="3" />
+            <enum name="four" value="4" />
+        </attr>
+
+        <attr name="firstLineColor" format="color" />
+        <attr name="secondLineColor" format="color" />
+        <attr name="thirdLineColor" format="color" />
+        <attr name="fourthLineColor" format="color" />
+
+        <attr name="stripesSpeed">
+            <flag name="high" value="0x30" />
+            <flag name="medium" value="0x50" />
+            <flag name="low" value="0x03" />
+        </attr>
+
+    </declare-styleable>
+</resources>

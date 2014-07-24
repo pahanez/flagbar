@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,17 +14,24 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.LinearLayout;
 
 public class Flagbar extends View {
 	
 	private static int DELAY_35_FPS = 1000/45;
 	private static int DELAY_60_FPS = 1000/60;
-	
+
+    private static final int DEFAULT_STRIPE_COLOR = Color.WHITE;
+    private static final int MAX_STRIPES_COUNT = 4;
+
 	private int mLayoutWidth,mLayoutHeigth,mCenterX,mCenterY;
-	
-	//->xml properties
+
 	private int mStripesCount = 3;
-	private int [] colors = new int[mStripesCount];
+
+
+
+	//->xml properties
+
 	private int []	speeds = new int[mStripesCount];
 	private Direction [] directions = new Direction[mStripesCount]; 
 	private int mStrokeWidth = 30;
@@ -56,47 +64,70 @@ public class Flagbar extends View {
 
 	public Flagbar(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
-		init();
 	}
 
 	public Flagbar(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init();
+
+        xmlConfig(context.obtainStyledAttributes(attrs,
+                R.styleable.flagbar));
+
 	}
 
-	public Flagbar(Context context) {
+
+    public Flagbar(Context context) {
 		super(context);
-		init();
 	}
-	
-	private void init() {
-		colors[0] = Color.BLACK;
-		colors[1] = Color.RED;
-		colors[2] = 0XFFFFCC00; 
-		
-		directions[0] = Direction.CLOCKWIZE;
-		directions[1] = Direction.COUNTERCLOCKWIZE;
-		directions[2] = Direction.CLOCKWIZE;
-		
-		speeds[0] = 2;
-		speeds[1] = 5;
-		speeds[2] = 7;
-		
 
-		for(int i = 0; i < mStripesCount; i++){
-			Paint  p = new Paint();
-			p.setColor(colors[i]);
-			p.setStrokeWidth(mStrokeWidth);
-			p.setStyle(Style.STROKE);
-			p.setAntiAlias(true);
-			
-			Stripe stripe = new Stripe();
-			stripe.paint = p;
-			stripe.dir = directions[i];
-			stripe.speed = speeds[i];
-			stripes.add(stripe);
-		}
-	}
+    private void xmlConfig(TypedArray typedArray) {
+        mStripesCount = (int) typedArray.getInteger(R.styleable.flagbar_stripesCount,mStripesCount);
+
+        if(mStripesCount<1 || mStripesCount>4)
+            throw new IllegalArgumentException("Stripes count could be between 1 ... 4 !");
+
+        int colors []  = new int[MAX_STRIPES_COUNT];
+        int firstLineColor = (int) typedArray.getInteger(R.styleable.flagbar_firstLineColor,DEFAULT_STRIPE_COLOR);
+        int secondLineColor = (int) typedArray.getInteger(R.styleable.flagbar_secondLineColor,DEFAULT_STRIPE_COLOR);
+        int thirdLineColor = (int) typedArray.getInteger(R.styleable.flagbar_thirdLineColor,DEFAULT_STRIPE_COLOR);
+        int fourthLineColor = (int) typedArray.getInteger(R.styleable.flagbar_fourthLineColor,DEFAULT_STRIPE_COLOR);
+
+
+
+        colors[0] = firstLineColor;
+        colors[1] = secondLineColor;
+        colors[2] = thirdLineColor;
+        colors[3] = fourthLineColor;
+
+        int tmp = typedArray.getInteger(R.styleable.flagbar_stripesSpeed,DEFAULT_STRIPE_COLOR);
+        android.util.Log.e("p37td8", "check : " +  typedArray.getInteger(R.styleable.flagbar_stripesSpeed,DEFAULT_STRIPE_COLOR));
+        android.util.Log.e("p37td8", "check : " +  Integer.toHexString(typedArray.getInteger(R.styleable.flagbar_stripesSpeed,DEFAULT_STRIPE_COLOR)));
+
+
+            directions[0] = Direction.CLOCKWIZE;
+            directions[1] = Direction.COUNTERCLOCKWIZE;
+            directions[2] = Direction.CLOCKWIZE;
+
+            speeds[0] = 2;
+            speeds[1] = 5;
+            speeds[2] = 7;
+
+
+            for(int i = 0; i < mStripesCount; i++){
+                Paint  p = new Paint();
+                p.setColor(colors[i]);
+                p.setStrokeWidth(mStrokeWidth);
+                p.setStyle(Style.STROKE);
+                p.setAntiAlias(true);
+
+                Stripe stripe = new Stripe();
+                stripe.paint = p;
+                stripe.dir = directions[i];
+                stripe.speed = speeds[i];
+                stripes.add(stripe);
+            }
+
+    }
+
 
 	
 	@Override
