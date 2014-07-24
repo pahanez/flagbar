@@ -24,26 +24,19 @@ public class Flagbar extends View {
 
     private static final int DEFAULT_STRIPE_COLOR = Color.WHITE;
     private static final int DEFAULT_STRIPE_SPEED = 5;
+    private static final int DEFAULT_STRIPE_DIRECTION = 0;
+    private static final int DEFAULT_PROGRESS_START = -90;
+
     private static final int MAX_STRIPES_COUNT = 4;
 
 	private int mLayoutWidth,mLayoutHeigth,mCenterX,mCenterY;
 
 	private int mStripesCount = 3;
+	private boolean mIndeterminate;
+	private int mStart;
 
-
-
-	//->xml properties
-
-	private Direction [] directions = new Direction[mStripesCount];
 	private int mStrokeWidth = 30;
-	private boolean mIndeterminate = true;
-	private int start = -90;
-	//
-	
-	//tmp
-	RectF rf;
-	//
-	
+
 	private int mProgress;
 	
 	public enum Direction {
@@ -93,39 +86,39 @@ public class Flagbar extends View {
         colors[2] = (int) typedArray.getInteger(R.styleable.flagbar_thirdLineColor,DEFAULT_STRIPE_COLOR);
         colors[3] = (int) typedArray.getInteger(R.styleable.flagbar_fourthLineColor,DEFAULT_STRIPE_COLOR);
 
-        //speed
+        //speeds
         int speeds [] = new int[MAX_STRIPES_COUNT];
         speeds[0] = typedArray.getInteger(R.styleable.flagbar_firstLineSpeed,DEFAULT_STRIPE_SPEED);
         speeds[1] = typedArray.getInteger(R.styleable.flagbar_secondLineSpeed,DEFAULT_STRIPE_SPEED);
         speeds[2] = typedArray.getInteger(R.styleable.flagbar_thirdLineSpeed,DEFAULT_STRIPE_SPEED);
         speeds[3] = typedArray.getInteger(R.styleable.flagbar_thirdLineSpeed,DEFAULT_STRIPE_SPEED);
 
+        //directions
+        Direction directions [] = new Direction[MAX_STRIPES_COUNT];
+        directions[0] = Direction.values()[typedArray.getInteger(R.styleable.flagbar_firstLineDirection,DEFAULT_STRIPE_DIRECTION)];
+        directions[1] = Direction.values()[typedArray.getInteger(R.styleable.flagbar_secondLineDirection,DEFAULT_STRIPE_DIRECTION)];
+        directions[2] = Direction.values()[typedArray.getInteger(R.styleable.flagbar_thirdLineDirection,DEFAULT_STRIPE_DIRECTION)];
+        directions[3] = Direction.values()[typedArray.getInteger(R.styleable.flagbar_fourthLineDirection,DEFAULT_STRIPE_DIRECTION)];
 
+        // is intermidiate
+        mIndeterminate = typedArray.getBoolean(R.styleable.flagbar_indeterminate, mIndeterminate);
 
+        // progressbar start position
+        mStart = typedArray.getInteger(R.styleable.flagbar_progressStart, DEFAULT_PROGRESS_START);
 
+        for (int i = 0; i < mStripesCount; i++) {
+            Paint p = new Paint();
+            p.setColor(colors[i]);
+            p.setStrokeWidth(mStrokeWidth);
+            p.setStyle(Style.STROKE);
+            p.setAntiAlias(true);
 
-        android.util.Log.e("p37td8", "check : " + Arrays.toString(speeds));
-
-
-            directions[0] = Direction.CLOCKWIZE;
-            directions[1] = Direction.COUNTERCLOCKWIZE;
-            directions[2] = Direction.CLOCKWIZE;
-
-
-
-            for(int i = 0; i < mStripesCount; i++){
-                Paint  p = new Paint();
-                p.setColor(colors[i]);
-                p.setStrokeWidth(mStrokeWidth);
-                p.setStyle(Style.STROKE);
-                p.setAntiAlias(true);
-
-                Stripe stripe = new Stripe();
-                stripe.paint = p;
-                stripe.dir = directions[i];
-                stripe.speed = speeds[i];
-                stripes.add(stripe);
-            }
+            Stripe stripe = new Stripe();
+            stripe.paint = p;
+            stripe.dir = directions[i];
+            stripe.speed = speeds[i];
+            stripes.add(stripe);
+        }
 
     }
 
@@ -141,11 +134,11 @@ public class Flagbar extends View {
 		mCenterX = mLayoutWidth/2;
 		mCenterY = mLayoutHeigth/2;
 		for(int i = 0; i < mStripesCount; i++){
-			rf = new RectF(mCenterX - mLayoutWidth/2 + mStrokeWidth/2+(i*mStrokeWidth), mCenterY-mLayoutHeigth/2+mStrokeWidth/2+(i*mStrokeWidth), mCenterX+mLayoutWidth/2-mStrokeWidth/2-(i*mStrokeWidth), mCenterY+mLayoutHeigth/2-mStrokeWidth/2-(i*mStrokeWidth));
+			RectF rf = new RectF(mCenterX - mLayoutWidth/2 + mStrokeWidth/2+(i*mStrokeWidth), mCenterY-mLayoutHeigth/2+mStrokeWidth/2+(i*mStrokeWidth), mCenterX+mLayoutWidth/2-mStrokeWidth/2-(i*mStrokeWidth), mCenterY+mLayoutHeigth/2-mStrokeWidth/2-(i*mStrokeWidth));
 			stripes.get(i).bounds = rf;
 			
 			//tmp
-			stripes.get(i).startDeg = -90;
+			stripes.get(i).startDeg = mStart;
 			stripes.get(i).endDeg = 60;
 			 
 		}

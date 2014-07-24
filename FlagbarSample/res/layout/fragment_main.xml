@@ -25,6 +25,9 @@
         flagbar:firstLineSpeed="medium"
         flagbar:secondLineSpeed="low"
         flagbar:thirdLineSpeed="high"
+        flagbar:indeterminate="true"
+        flagbar:progressStart="bottom"
+        flagbar:thirdLineDirection="counterclockwise"
         android:layout_height="200dp"
 
 
