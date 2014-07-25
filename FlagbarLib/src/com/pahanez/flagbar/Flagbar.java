@@ -26,16 +26,18 @@ public class Flagbar extends View {
     private static final int DEFAULT_STRIPE_SPEED = 5;
     private static final int DEFAULT_STRIPE_DIRECTION = 0;
     private static final int DEFAULT_PROGRESS_START = -90;
+    private static final int DEFAULT_STROKE_WIDTH = 30;
+    private static final int DEFAULT_STRIPE_COUNT = 3;
 
     private static final int MAX_STRIPES_COUNT = 4;
 
 	private int mLayoutWidth,mLayoutHeigth,mCenterX,mCenterY;
 
-	private int mStripesCount = 3;
+	private int mStripesCount;
 	private boolean mIndeterminate;
 	private int mStart;
 
-	private int mStrokeWidth = 30;
+	private int mStrokeWidth;
 
 	private int mProgress;
 	
@@ -73,7 +75,7 @@ public class Flagbar extends View {
 	}
 
     private void xmlConfig(TypedArray typedArray) {
-        mStripesCount = (int) typedArray.getInteger(R.styleable.flagbar_stripesCount,mStripesCount);
+        mStripesCount = (int) typedArray.getInteger(R.styleable.flagbar_stripesCount,DEFAULT_STRIPE_COUNT);
 
         if(mStripesCount<1 || mStripesCount>4)
             throw new IllegalArgumentException("Stripes count could be between 1 ... 4 !");
@@ -100,8 +102,10 @@ public class Flagbar extends View {
         directions[2] = Direction.values()[typedArray.getInteger(R.styleable.flagbar_thirdLineDirection,DEFAULT_STRIPE_DIRECTION)];
         directions[3] = Direction.values()[typedArray.getInteger(R.styleable.flagbar_fourthLineDirection,DEFAULT_STRIPE_DIRECTION)];
 
-        // is intermidiate
+        // is indeterminate
         mIndeterminate = typedArray.getBoolean(R.styleable.flagbar_indeterminate, mIndeterminate);
+
+        mStrokeWidth = (int)typedArray.getDimension(R.styleable.flagbar_lineWidth,DEFAULT_STROKE_WIDTH);
 
         // progressbar start position
         mStart = typedArray.getInteger(R.styleable.flagbar_progressStart, DEFAULT_PROGRESS_START);
@@ -109,7 +113,6 @@ public class Flagbar extends View {
         for (int i = 0; i < mStripesCount; i++) {
             Paint p = new Paint();
             p.setColor(colors[i]);
-            p.setStrokeWidth(mStrokeWidth);
             p.setStyle(Style.STROKE);
             p.setAntiAlias(true);
 
@@ -130,17 +133,19 @@ public class Flagbar extends View {
 		mLayoutWidth = w;
 		mLayoutHeigth =  h;
 		
-		android.util.Log.e("p37td8", "mLayoutWidth : " + mLayoutWidth + " , mLayoutWidth2 : "  + mLayoutWidth);
 		mCenterX = mLayoutWidth/2;
 		mCenterY = mLayoutHeigth/2;
+        if(mLayoutHeigth / 2 < mStrokeWidth*mStripesCount){
+            mStrokeWidth = mLayoutHeigth/(mStripesCount * 2);
+
+        }
 		for(int i = 0; i < mStripesCount; i++){
 			RectF rf = new RectF(mCenterX - mLayoutWidth/2 + mStrokeWidth/2+(i*mStrokeWidth), mCenterY-mLayoutHeigth/2+mStrokeWidth/2+(i*mStrokeWidth), mCenterX+mLayoutWidth/2-mStrokeWidth/2-(i*mStrokeWidth), mCenterY+mLayoutHeigth/2-mStrokeWidth/2-(i*mStrokeWidth));
 			stripes.get(i).bounds = rf;
-			
-			//tmp
+            stripes.get(i).paint.setStrokeWidth(mStrokeWidth);
 			stripes.get(i).startDeg = mStart;
-			stripes.get(i).endDeg = 60;
-			 
+            if(mIndeterminate)
+			    stripes.get(i).endDeg = 60;
 		}
 		if(mIndeterminate)
 			mIndeterminateHandler.sendEmptyMessage(0);
@@ -163,7 +168,10 @@ public class Flagbar extends View {
 	}
 	
 	public void setIndeterminate(boolean indeterminate){
-		
+		mIndeterminate = indeterminate;
+        if(!indeterminate)
+            mIndeterminateHandler.removeMessages(0);
+        invalidate();
 	}
 	
 	private class Stripe{
@@ -172,11 +180,10 @@ public class Flagbar extends View {
 		int endDeg; 
 		Paint paint;
 		Direction dir;
-		int speed = 5;
+		int speed;
 		
 		private void draw(Canvas c){
 			if(mIndeterminate){
-				//TODO
 				switch (dir) {
 				case CLOCKWIZE:
 						if(startDeg >= 360) startDeg = 0;
@@ -190,8 +197,6 @@ public class Flagbar extends View {
 				}
 				
 				c.drawArc(bounds, startDeg, endDeg, false, paint);
-//				postInvalidateDelayed(DELAY_60_FPS);
-				
 			}else{
 				c.drawArc(bounds, startDeg, endDeg, false, paint);
 			}

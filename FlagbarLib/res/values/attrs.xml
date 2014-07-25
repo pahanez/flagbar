@@ -60,6 +60,8 @@
             <enum name="left" value="180"/>
         </attr>
 
+        <attr name="lineWidth" format="dimension"/>
+
 
     </declare-styleable>
 </resources>
