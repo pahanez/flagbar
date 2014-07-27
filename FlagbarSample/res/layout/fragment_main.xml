@@ -26,6 +26,7 @@
         flagbar:secondLineSpeed="low"
         flagbar:thirdLineSpeed="high"
         flagbar:indeterminate="true"
+        flagbar:fps="fps30"
         flagbar:lineWidth="10dp"
         flagbar:progressStart="bottom"
         flagbar:thirdLineDirection="counterclockwise"

@@ -13,24 +13,27 @@
         <attr name="thirdLineColor" format="color" />
         <attr name="fourthLineColor" format="color" />
 
-        <attr name="firstLineSpeed" format="integer">
-            <enum name="high" value="7" />
-            <enum name="medium" value="5" />
+        <attr name="firstLineSpeed" format="enum">
+            <enum name="high" value="4" />
+            <enum name="medium" value="3" />
             <enum name="low" value="2" />
         </attr>
-        <attr name="secondLineSpeed" format="integer">
-            <enum name="high" value="7" />
-            <enum name="medium" value="5" />
+        <attr name="secondLineSpeed" format="enum">
+            <enum name="high" value="4" />
+            <enum name="medium" value="3" />
             <enum name="low" value="2" />
         </attr>
-        <attr name="thirdLineSpeed" format="integer">
-            <enum name="high" value="7" />
-            <enum name="medium" value="5" />
+        <attr name="thirdLineSpeed" format="enum">
+            <!--<enum name="high" value="12" />
+            <enum name="medium" value="9" />
+            <enum name="low" value="4" />-->
+            <enum name="high" value="4" />
+            <enum name="medium" value="3" />
             <enum name="low" value="2" />
         </attr>
-        <attr name="fourthLineSpeed" format="integer">
-            <enum name="high" value="7" />
-            <enum name="medium" value="5" />
+        <attr name="fourthLineSpeed" format="enum">
+            <enum name="high" value="4" />
+            <enum name="medium" value="3" />
             <enum name="low" value="2" />
         </attr>
 
@@ -61,6 +64,10 @@
         </attr>
 
         <attr name="lineWidth" format="dimension"/>
+        <attr name="fps" format="enum">
+            <enum name="fps30" value="33"/>
+            <enum name="fps60" value="16"/>
+        </attr>
 
 
     </declare-styleable>

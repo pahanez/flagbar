@@ -17,13 +17,16 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
+/**
+ * @author pindziukou
+ * */
 public class Flagbar extends View {
 	
-	private static int DELAY_35_FPS = 1000/45;
+	private static int DELAY_30_FPS = 1000/30;
 	private static int DELAY_60_FPS = 1000/60;
 
     private static final int DEFAULT_STRIPE_COLOR = Color.WHITE;
-    private static final int DEFAULT_STRIPE_SPEED = 5;
+    private static final int DEFAULT_STRIPE_SPEED = 9;
     private static final int DEFAULT_STRIPE_DIRECTION = 0;
     private static final int DEFAULT_PROGRESS_START = -90;
     private static final int DEFAULT_STROKE_WIDTH = 30;
@@ -36,10 +39,9 @@ public class Flagbar extends View {
 	private int mStripesCount;
 	private boolean mIndeterminate;
 	private int mStart;
-
 	private int mStrokeWidth;
-
 	private int mProgress;
+    private int mFPS;
 	
 	public enum Direction {
 		CLOCKWIZE,COUNTERCLOCKWIZE;
@@ -51,7 +53,7 @@ public class Flagbar extends View {
         	removeMessages(0);
         	invalidate();
         	if(mIndeterminate)
-        		sendEmptyMessageDelayed(0, DELAY_60_FPS);
+        		sendEmptyMessageDelayed(0, mFPS);
             //Deutschland champion 2014!!!!
     		}
     };
@@ -75,7 +77,7 @@ public class Flagbar extends View {
 	}
 
     private void xmlConfig(TypedArray typedArray) {
-        mStripesCount = (int) typedArray.getInteger(R.styleable.flagbar_stripesCount,DEFAULT_STRIPE_COUNT);
+        mStripesCount = typedArray.getInteger(R.styleable.flagbar_stripesCount,DEFAULT_STRIPE_COUNT);
 
         if(mStripesCount<1 || mStripesCount>4)
             throw new IllegalArgumentException("Stripes count could be between 1 ... 4 !");
@@ -105,10 +107,14 @@ public class Flagbar extends View {
         // is indeterminate
         mIndeterminate = typedArray.getBoolean(R.styleable.flagbar_indeterminate, mIndeterminate);
 
+        // stroke width
         mStrokeWidth = (int)typedArray.getDimension(R.styleable.flagbar_lineWidth,DEFAULT_STROKE_WIDTH);
 
         // progressbar start position
         mStart = typedArray.getInteger(R.styleable.flagbar_progressStart, DEFAULT_PROGRESS_START);
+
+        // fps
+        mFPS = typedArray.getInteger(R.styleable.flagbar_fps,DELAY_60_FPS);
 
         for (int i = 0; i < mStripesCount; i++) {
             Paint p = new Paint();
@@ -131,7 +137,7 @@ public class Flagbar extends View {
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
 		mLayoutWidth = w;
-		mLayoutHeigth =  h;
+		mLayoutHeigth =  w;
 		
 		mCenterX = mLayoutWidth/2;
 		mCenterY = mLayoutHeigth/2;
@@ -173,25 +179,28 @@ public class Flagbar extends View {
             mIndeterminateHandler.removeMessages(0);
         invalidate();
 	}
-	
+
+    /**
+     * Flag stripe
+     * */
 	private class Stripe{
-		RectF bounds;
-		int startDeg;
-		int endDeg; 
-		Paint paint;
-		Direction dir;
-		int speed;
+		private RectF bounds;
+		private int startDeg;
+		private int endDeg;
+		private Paint paint;
+		private Direction dir;
+		private int speed;
 		
 		private void draw(Canvas c){
 			if(mIndeterminate){
 				switch (dir) {
 				case CLOCKWIZE:
 						if(startDeg >= 360) startDeg = 0;
-						startDeg+=speed;
+						startDeg+=mFPS == DELAY_30_FPS ? speed:speed/*/2*/;
 					break;
 				case COUNTERCLOCKWIZE:
 					if(startDeg <= -360) startDeg = 0;
-						startDeg-=speed;
+						startDeg-=mFPS == DELAY_30_FPS ? speed:speed/*/2*/;
 						
 					break;
 				}
