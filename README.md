@@ -4,7 +4,6 @@ Flagbar
 Custom ProgressBar view.
 
 ##Usage
-=======
 
 #####Add FlagBarLib to your project.
 #####Add  xmlns:flagbar="http://schemas.android.com/apk/res-auto" to layout which contains Flagbar.
@@ -38,7 +37,6 @@ Custom ProgressBar view.
         flagbar:fourthLineColor=["color"]
         flagbar:indeterminate=["true" | "false"] />
 ##Templates
-=======
 
 | Country | Determinate | Indeterminate |
 | :------------ |:---------------:|:-----:|
