@@ -7,6 +7,14 @@ Usage
 =======
 
 Add FlagBarLib to your project.
+Add  xmlns:flagbar="http://schemas.android.com/apk/res-auto" to layout which contains Flagbar.
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:flagbar="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+Syntax:
 
         <com.pahanez.flagbar.Flagbar
         android:layout_width="100dp"
