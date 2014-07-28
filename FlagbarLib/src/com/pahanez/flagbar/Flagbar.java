@@ -129,6 +129,8 @@ public class Flagbar extends View {
             stripes.add(stripe);
         }
 
+        typedArray.recycle();
+
     }
 
 

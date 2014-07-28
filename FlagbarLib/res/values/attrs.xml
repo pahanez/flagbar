@@ -14,27 +14,24 @@
         <attr name="fourthLineColor" format="color" />
 
         <attr name="firstLineSpeed" format="enum">
-            <enum name="high" value="4" />
-            <enum name="medium" value="3" />
-            <enum name="low" value="2" />
+            <enum name="high" value="12" />
+            <enum name="medium" value="9" />
+            <enum name="low" value="4" />
         </attr>
         <attr name="secondLineSpeed" format="enum">
-            <enum name="high" value="4" />
-            <enum name="medium" value="3" />
-            <enum name="low" value="2" />
+            <enum name="high" value="12" />
+            <enum name="medium" value="9" />
+            <enum name="low" value="4" />
         </attr>
         <attr name="thirdLineSpeed" format="enum">
-            <!--<enum name="high" value="12" />
+            <enum name="high" value="12" />
             <enum name="medium" value="9" />
-            <enum name="low" value="4" />-->
-            <enum name="high" value="4" />
-            <enum name="medium" value="3" />
-            <enum name="low" value="2" />
+            <enum name="low" value="4" />
         </attr>
         <attr name="fourthLineSpeed" format="enum">
-            <enum name="high" value="4" />
-            <enum name="medium" value="3" />
-            <enum name="low" value="2" />
+            <enum name="high" value="12" />
+            <enum name="medium" value="9" />
+            <enum name="low" value="4" />
         </attr>
 
         <attr name="firstLineDirection" format="integer">
@@ -56,7 +53,7 @@
         </attr>
 
         <attr name="indeterminate" format="boolean"/>
-        <attr name="progressStart" format="integer">
+        <attr name="progressStart" format="enum">
             <enum name="top" value="-90"/>
             <enum name="right" value="0"/>
             <enum name="bottom" value="90"/>

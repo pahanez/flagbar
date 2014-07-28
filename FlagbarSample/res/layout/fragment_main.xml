@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@android:color/darker_gray"
 
     tools:context="com.pahanez.flagbar.sample.MainActivity$PlaceholderFragment" >
 
@@ -18,22 +19,14 @@
         android:text="@string/hello_world" />
     
     <com.pahanez.flagbar.Flagbar
-        android:layout_width="200dp"
-        flagbar:stripesCount="three"
-        flagbar:firstLineColor="@color/black"
-        flagbar:secondLineColor="#00FFFF"
-        flagbar:firstLineSpeed="medium"
-        flagbar:secondLineSpeed="low"
-        flagbar:thirdLineSpeed="high"
-        flagbar:indeterminate="true"
-        flagbar:fps="fps30"
-        flagbar:lineWidth="10dp"
-        flagbar:progressStart="bottom"
-        flagbar:thirdLineDirection="counterclockwise"
-        android:layout_height="200dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        style="@style/FlagPoland"
+        flagbar:stripesCount="two"
+        flagbar:lineWidth="50dp"
+        flagbar:firstLineDirection="counterclockwise"
 
 
-        android:background="@android:color/darker_gray"
         android:layout_centerInParent="true" />
 
 </RelativeLayout>
