@@ -3,7 +3,7 @@ Flagbar
 
 Custom ProgressBar view.
 
-Usage
+##Usage
 =======
 
 #####Add FlagBarLib to your project.
@@ -37,7 +37,7 @@ Usage
         flagbar:thirdLineColor=["color"]
         flagbar:fourthLineColor=["color"]
         flagbar:indeterminate=["true" | "false"] />
-Templates
+##Templates
 =======
 
 | Country | Determinate | Indeterminate |
