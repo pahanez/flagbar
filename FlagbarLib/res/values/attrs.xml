@@ -61,6 +61,7 @@
         </attr>
 
         <attr name="lineWidth" format="dimension"/>
+        <attr name="progress" format="integer"/>
         <attr name="fps" format="enum">
             <enum name="fps30" value="33"/>
             <enum name="fps60" value="16"/>

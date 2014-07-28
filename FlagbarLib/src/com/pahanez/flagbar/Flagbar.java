@@ -29,6 +29,7 @@ public class Flagbar extends View {
     private static final int DEFAULT_STRIPE_SPEED = 9;
     private static final int DEFAULT_STRIPE_DIRECTION = 0;
     private static final int DEFAULT_PROGRESS_START = -90;
+    private static final int DEFAULT_PROGRESS_VALUE = 0;
     private static final int DEFAULT_STROKE_WIDTH = 30;
     private static final int DEFAULT_STRIPE_COUNT = 3;
 
@@ -116,6 +117,10 @@ public class Flagbar extends View {
         // fps
         mFPS = typedArray.getInteger(R.styleable.flagbar_fps,DELAY_60_FPS);
 
+        //progress
+        mProgress = typedArray.getInteger(R.styleable.flagbar_progress,DEFAULT_PROGRESS_VALUE);
+        checkProgressValue(mProgress);
+
         for (int i = 0; i < mStripesCount; i++) {
             Paint p = new Paint();
             p.setColor(colors[i]);
@@ -133,9 +138,13 @@ public class Flagbar extends View {
 
     }
 
+    private void checkProgressValue(int progress) {
+        if(progress <0  || progress >=360)
+            this.mProgress = 0;
+    }
 
-	
-	@Override
+
+    @Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
 		mLayoutWidth = w;
@@ -154,6 +163,8 @@ public class Flagbar extends View {
 			stripes.get(i).startDeg = mStart;
             if(mIndeterminate)
 			    stripes.get(i).endDeg = 60;
+            else
+                stripes.get(i).endDeg = mProgress;
 		}
 		if(mIndeterminate)
 			mIndeterminateHandler.sendEmptyMessage(0);
@@ -168,6 +179,7 @@ public class Flagbar extends View {
 	private void setProgress(int value){
 		if(mIndeterminate == false){
 			mProgress = value;
+            checkProgressValue(value);
 			for(Stripe stripe : stripes){
 				stripe.endDeg = mProgress;
 			}
@@ -198,11 +210,11 @@ public class Flagbar extends View {
 				switch (dir) {
 				case CLOCKWIZE:
 						if(startDeg >= 360) startDeg = 0;
-						startDeg+=mFPS == DELAY_30_FPS ? speed:speed/*/2*/;
+						startDeg+=mFPS == DELAY_30_FPS ? speed:speed/2;
 					break;
 				case COUNTERCLOCKWIZE:
 					if(startDeg <= -360) startDeg = 0;
-						startDeg-=mFPS == DELAY_30_FPS ? speed:speed/*/2*/;
+						startDeg-=mFPS == DELAY_30_FPS ? speed:speed/2;
 						
 					break;
 				}

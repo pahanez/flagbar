@@ -18,40 +18,46 @@
     </style>
     
     <style name="FlagIndeterminate" >
-        <item name="stripesCount">three</item>
         <item name="firstLineSpeed">medium</item>
         <item name="secondLineSpeed">low</item>
         <item name="thirdLineSpeed">high</item>
         <item name="indeterminate">true</item>
         <item name="thirdLineDirection">counterclockwise</item>
-        <item name="progressStart">bottom</item>
+        <item name="progressStart">top</item>
     </style>
 
     <style name="FlagBelarusOne" parent="FlagIndeterminate">
         <item name="firstLineColor">#FFFFFF</item>
         <item name="secondLineColor">#CC0000</item>
         <item name="thirdLineColor">#FFFFFF</item>
+        <item name="stripesCount">three</item>
     </style>
 
     <style name="FlagPoland" parent="FlagIndeterminate">
         <item name="firstLineColor">#FFFFFF</item>
         <item name="secondLineColor">#D4213D</item>
+        <item name="stripesCount">two</item>
+        <item name="lineWidth">20dp</item>
     </style>
 
     <style name="FlagUkraine" parent="FlagIndeterminate">
         <item name="firstLineColor">#0057B8</item>
         <item name="secondLineColor">#FFD700</item>
+        <item name="stripesCount">two</item>
+        <item name="lineWidth">20dp</item>
     </style>
 
     <style name="FlagBelarusTwo" parent="FlagIndeterminate">
         <item name="firstLineColor">#CC0000</item>
         <item name="secondLineColor">#CC0000</item>
         <item name="thirdLineColor">#009900</item>
+        <item name="stripesCount">three</item>
     </style>
 
     <style name="FlagGermany" parent="FlagIndeterminate">
         <item name="firstLineColor">#000000</item>
         <item name="secondLineColor">#FF0000</item>
         <item name="thirdLineColor">#FFCC00</item>
+        <item name="stripesCount">three</item>
     </style>
 </resources>
