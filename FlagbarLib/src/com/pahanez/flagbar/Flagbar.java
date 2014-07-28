@@ -186,7 +186,12 @@ public class Flagbar extends View {
 			invalidate();
 		}
 	}
-	
+
+    /**
+     * Set progress bar infinite
+     *
+     * @param indeterminate
+     * */
 	public void setIndeterminate(boolean indeterminate){
 		mIndeterminate = indeterminate;
         if(!indeterminate)

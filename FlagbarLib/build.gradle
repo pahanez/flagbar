@@ -26,7 +26,7 @@ android {
         release.setRoot('build-types/release')
     }
     defaultConfig {
-        minSdkVersion 13
+        minSdkVersion 8
     }
     productFlavors {
     }
