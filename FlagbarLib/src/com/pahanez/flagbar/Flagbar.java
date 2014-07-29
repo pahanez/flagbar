@@ -1,7 +1,6 @@
 package com.pahanez.flagbar;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;
@@ -15,7 +14,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.LinearLayout;
 
 /**
  * @author pindziukou
@@ -43,6 +41,9 @@ public class Flagbar extends View {
 	private int mStrokeWidth;
 	private int mProgress;
     private int mFPS;
+
+    private int colors[],speeds[];
+    private Direction directions[];
 	
 	public enum Direction {
 		CLOCKWIZE,COUNTERCLOCKWIZE;
@@ -67,39 +68,41 @@ public class Flagbar extends View {
 
 	public Flagbar(Context context, AttributeSet attrs) {
 		super(context, attrs);
-        xmlConfig(context.obtainStyledAttributes(attrs,
+        parseXmlConfig(context.obtainStyledAttributes(attrs,
                 R.styleable.flagbar));
 
+        createStripes();
+
 	}
+
 
 
     public Flagbar(Context context) {
 		super(context);
 	}
 
-    private void xmlConfig(TypedArray typedArray) {
+    private void parseXmlConfig(TypedArray typedArray) {
         mStripesCount = typedArray.getInteger(R.styleable.flagbar_stripesCount,DEFAULT_STRIPE_COUNT);
 
         if(mStripesCount<1 || mStripesCount>4)
             throw new IllegalArgumentException("Stripes count could be between 1 ... 4 !");
 
-
         //colors
-        int colors []  = new int[MAX_STRIPES_COUNT];
-        colors[0] = (int) typedArray.getInteger(R.styleable.flagbar_firstLineColor,DEFAULT_STRIPE_COLOR);
-        colors[1] = (int) typedArray.getInteger(R.styleable.flagbar_secondLineColor,DEFAULT_STRIPE_COLOR);
-        colors[2] = (int) typedArray.getInteger(R.styleable.flagbar_thirdLineColor,DEFAULT_STRIPE_COLOR);
-        colors[3] = (int) typedArray.getInteger(R.styleable.flagbar_fourthLineColor,DEFAULT_STRIPE_COLOR);
+        colors = new int[MAX_STRIPES_COUNT];
+        colors[0] = typedArray.getInteger(R.styleable.flagbar_firstLineColor,DEFAULT_STRIPE_COLOR);
+        colors[1] = typedArray.getInteger(R.styleable.flagbar_secondLineColor,DEFAULT_STRIPE_COLOR);
+        colors[2] = typedArray.getInteger(R.styleable.flagbar_thirdLineColor,DEFAULT_STRIPE_COLOR);
+        colors[3] = typedArray.getInteger(R.styleable.flagbar_fourthLineColor,DEFAULT_STRIPE_COLOR);
 
         //speeds
-        int speeds [] = new int[MAX_STRIPES_COUNT];
+        speeds = new int[MAX_STRIPES_COUNT];
         speeds[0] = typedArray.getInteger(R.styleable.flagbar_firstLineSpeed,DEFAULT_STRIPE_SPEED);
         speeds[1] = typedArray.getInteger(R.styleable.flagbar_secondLineSpeed,DEFAULT_STRIPE_SPEED);
         speeds[2] = typedArray.getInteger(R.styleable.flagbar_thirdLineSpeed,DEFAULT_STRIPE_SPEED);
         speeds[3] = typedArray.getInteger(R.styleable.flagbar_thirdLineSpeed,DEFAULT_STRIPE_SPEED);
 
         //directions
-        Direction directions [] = new Direction[MAX_STRIPES_COUNT];
+        directions = new Direction[MAX_STRIPES_COUNT];
         directions[0] = Direction.values()[typedArray.getInteger(R.styleable.flagbar_firstLineDirection,DEFAULT_STRIPE_DIRECTION)];
         directions[1] = Direction.values()[typedArray.getInteger(R.styleable.flagbar_secondLineDirection,DEFAULT_STRIPE_DIRECTION)];
         directions[2] = Direction.values()[typedArray.getInteger(R.styleable.flagbar_thirdLineDirection,DEFAULT_STRIPE_DIRECTION)];
@@ -121,27 +124,39 @@ public class Flagbar extends View {
         mProgress = typedArray.getInteger(R.styleable.flagbar_progress,DEFAULT_PROGRESS_VALUE);
         checkProgressValue(mProgress);
 
-        for (int i = 0; i < mStripesCount; i++) {
-            Paint p = new Paint();
-            p.setColor(colors[i]);
-            p.setStyle(Style.STROKE);
-            p.setAntiAlias(true);
-
-            Stripe stripe = new Stripe();
-            stripe.paint = p;
-            stripe.dir = directions[i];
-            stripe.speed = speeds[i];
-            stripes.add(stripe);
-        }
-
         typedArray.recycle();
 
     }
 
+    /**
+     * Progress could be between 0...360
+     * */
     private void checkProgressValue(int progress) {
         if(progress <0  || progress >=360)
             this.mProgress = 0;
     }
+
+    /**
+     * Create flag stripes
+     * */
+    private void createStripes() {
+        for (int i = 0; i < mStripesCount; i++) {
+            Stripe stripe = new Stripe();
+            stripe.paint = createStripePaint(i);
+            stripe.dir = directions[i];
+            stripe.speed = speeds[i];
+            stripes.add(stripe);
+        }
+    }
+
+    private Paint createStripePaint(int position){
+        Paint stripePaint = new Paint();
+        stripePaint.setColor(colors[position]);
+        stripePaint.setStyle(Style.STROKE);
+        stripePaint.setAntiAlias(true);
+        return stripePaint;
+    }
+
 
 
     @Override
