@@ -31,9 +31,11 @@ public class Flagbar extends View {
     private static final int DEFAULT_STROKE_WIDTH = 30;
     private static final int DEFAULT_STRIPE_COUNT = 3;
 
+
+    private static final int INDETERMINATE_ANGLE = 60;
     private static final int MAX_STRIPES_COUNT = 4;
 
-	private int mLayoutWidth,mLayoutHeigth,mCenterX,mCenterY;
+	private int mLayoutWidth, mLayoutHeight,mCenterX,mCenterY;
 
 	private int mStripesCount;
 	private boolean mIndeterminate;
@@ -163,30 +165,35 @@ public class Flagbar extends View {
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
 		mLayoutWidth = w;
-		mLayoutHeigth =  w;
+		mLayoutHeight =  w;
 		
 		mCenterX = mLayoutWidth/2;
-		mCenterY = mLayoutHeigth/2;
-        if(mLayoutHeigth / 2 < mStrokeWidth*mStripesCount){
-            mStrokeWidth = mLayoutHeigth/(mStripesCount * 2);
+		mCenterY = mLayoutHeight /2;
+        fitStrokeWidthToLayout();
 
-        }
 		for(int i = 0; i < mStripesCount; i++){
-			RectF rf = new RectF(mCenterX - mLayoutWidth/2 + mStrokeWidth/2+(i*mStrokeWidth), mCenterY-mLayoutHeigth/2+mStrokeWidth/2+(i*mStrokeWidth), mCenterX+mLayoutWidth/2-mStrokeWidth/2-(i*mStrokeWidth), mCenterY+mLayoutHeigth/2-mStrokeWidth/2-(i*mStrokeWidth));
+			RectF rf = new RectF(mCenterX - mLayoutWidth/2 + mStrokeWidth/2+(i*mStrokeWidth), mCenterY- mLayoutHeight /2+mStrokeWidth/2+(i*mStrokeWidth), mCenterX+mLayoutWidth/2-mStrokeWidth/2-(i*mStrokeWidth), mCenterY+ mLayoutHeight /2-mStrokeWidth/2-(i*mStrokeWidth));
 			stripes.get(i).bounds = rf;
             stripes.get(i).paint.setStrokeWidth(mStrokeWidth);
 			stripes.get(i).startDeg = mStart;
-            if(mIndeterminate)
-			    stripes.get(i).endDeg = 60;
-            else
-                stripes.get(i).endDeg = mProgress;
+            stripes.get(i).endDeg = mIndeterminate?INDETERMINATE_ANGLE:mProgress;
 		}
+        startIndeterminate();
+	}
+
+
+    private void fitStrokeWidthToLayout() {
+        if(mLayoutHeight / 2 < mStrokeWidth*mStripesCount){
+            mStrokeWidth = mLayoutHeight /(mStripesCount * 2);
+        }
+    }
+
+    private void startIndeterminate() {
 		if(mIndeterminate)
 			mIndeterminateHandler.sendEmptyMessage(0);
-	}
-	
-	
-	/**
+    }
+
+    /**
 	 * Set progress value
 	 * 
 	 * @param value 0...360
